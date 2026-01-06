@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Temel URL tanımı
-const BASE_URL = 'https://ders-secim-backend.onrender.com';
+const BASE_URL = 'https://webprojeokul.onrender.com';
 
 const api = axios.create({
   baseURL: BASE_URL
