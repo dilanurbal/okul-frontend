@@ -45,9 +45,9 @@ function Login({ setUser }) {
         <div className="relative z-10 text-center text-white">
           <div className="text-8xl mb-6 animate-bounce">🎓</div>
           <h1 className="text-6xl font-black tracking-tighter leading-none mb-4">
-            AKADEMİK <br /> <span className="text-yellow-300">DÜNYAM</span>
+            AKADEMİK <br /> <span className="text-yellow-300">DÜNYA</span>
           </h1>
-          <p className="text-xl font-medium opacity-90">Her şey senin başarın için burada! ✨</p>
+          <p className="text-xl font-medium opacity-90"> ✨</p>
         </div>
       </div>
 
@@ -63,7 +63,7 @@ function Login({ setUser }) {
           {/* Şirin Sekmeler */}
           <div className="flex bg-slate-100 p-2 rounded-[2rem] mb-8">
             <button onClick={() => setActiveTab('student')} className={`flex-1 py-4 rounded-[1.8rem] text-xs font-black transition-all ${activeTab === 'student' ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white shadow-lg' : 'text-slate-400'}`}>ÖĞRENCİ</button>
-            <button onClick={() => setActiveTab('admin')} className={`flex-1 py-4 rounded-[1.8rem] text-xs font-black transition-all ${activeTab === 'admin' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-slate-400'}`}>HOCA</button>
+            <button onClick={() => setActiveTab('admin')} className={`flex-1 py-4 rounded-[1.8rem] text-xs font-black transition-all ${activeTab === 'admin' ? 'bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg' : 'text-slate-400'}`}>AKADEMİSYEN</button>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -71,7 +71,7 @@ function Login({ setUser }) {
             <input type="password" placeholder="Şifren 🔑" className="w-full p-5 bg-slate-50 border-4 border-transparent rounded-[2rem] focus:border-indigo-200 outline-none font-bold text-slate-700 transition-all text-center" onChange={(e) => setPassword(e.target.value)} required />
             
             <button type="submit" disabled={loading} className={`w-full py-5 rounded-[2rem] font-black text-white uppercase tracking-widest transition-all shadow-xl active:scale-95 ${activeTab === 'student' ? 'bg-indigo-600 hover:bg-indigo-700 shadow-indigo-200' : 'bg-purple-600 hover:bg-purple-700 shadow-purple-200'}`}>
-              {loading ? 'YÜKLENİYOR... ✨' : 'HADİ GİRELİM! 🚀'}
+              {loading ? 'YÜKLENİYOR... ✨' : 'Sisteme gir🚀'}
             </button>
           </form>
 

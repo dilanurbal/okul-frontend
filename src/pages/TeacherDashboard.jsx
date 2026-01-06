@@ -9,6 +9,8 @@ const TeacherDashboard = () => {
   const [allEnrollments, setAllEnrollments] = useState([]); // Öğrencileri bulmak için yeni state
   
   const [deptName, setDeptName] = useState('');
+  const [deptEditMode, setDeptEditMode] = useState(false); 
+  const [deptEditId, setDeptEditId] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editId, setEditId] = useState(null);
   const [newCourse, setNewCourse] = useState({ 
@@ -37,16 +39,31 @@ const TeacherDashboard = () => {
   };
 
   const handleSaveDepartment = async (e) => {
-    e.preventDefault();
-    if (!deptName.trim()) return;
-    try {
+  e.preventDefault();
+  if (!deptName.trim()) return;
+  try {
+    if (deptEditMode) {
+      // GÜNCELLEME
+      await api.put(`/departments/${deptEditId}`, { name: deptName });
+      alert("Bölüm Güncellendi! 🔄");
+    } else {
+      // YENİ EKLEME
       await api.post('/departments', { name: deptName });
-      alert(`"${deptName}" Bölümü Başarıyla Eklendi! ✨`);
-      setDeptName('');
-      loadData();
-    } catch (err) { alert("Bölüm eklenirken hata oluştu."); }
-  };
+      alert(`"${deptName}" Bölümü Eklendi! ✨`);
+    }
+    setDeptName('');
+    setDeptEditMode(false);
+    loadData(); // Listeyi yenile
+  } catch (err) { alert("Bölüm işlemi başarısız."); }
+};
 
+const deleteDepartment = async (id) => {
+  if(!window.confirm("Bu bölümü silmek bağlı dersleri etkileyebilir. Emin misiniz?")) return;
+  try {
+    await api.delete(`/departments/${id}`);
+    loadData();
+  } catch (err) { alert("Bölüm silinemedi."); }
+};
   const handleSaveCourse = async (e) => {
     e.preventDefault();
     const payload = {
@@ -101,12 +118,46 @@ const TeacherDashboard = () => {
         {/* SOL TARAF: FORM ALANLARI (DEĞİŞMEDİ) */}
         <div className="lg:col-span-5 space-y-6">
           <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border-2 border-indigo-50">
-            <h2 className="font-black text-indigo-600 mb-4 text-xs uppercase italic tracking-widest">1. Yeni Bölüm Tanımla 🏗️</h2>
-            <form onSubmit={handleSaveDepartment} className="flex gap-2">
-              <input className="flex-1 p-4 bg-slate-50 rounded-2xl font-bold outline-none ring-2 ring-transparent focus:ring-indigo-200 transition-all" placeholder="Örn: Bilgisayar" value={deptName} onChange={(e) => setDeptName(e.target.value)} />
-              <button className="bg-indigo-600 text-white px-6 rounded-2xl font-black hover:bg-slate-900 transition-all">EKLE</button>
-            </form>
+    <h2 className="font-black text-indigo-600 mb-4 text-xs uppercase italic tracking-widest">
+      {deptEditMode ? 'Bölümü Düzenle ✏️' : '1. Bölüm Yönetimi 🏗️'}
+    </h2>
+    
+    <form onSubmit={handleSaveDepartment} className="flex gap-2 mb-6">
+      <input 
+        className="flex-1 p-4 bg-slate-50 rounded-2xl font-bold outline-none ring-2 ring-transparent focus:ring-indigo-200 transition-all" 
+        placeholder="Bölüm Adı" 
+        value={deptName} 
+        onChange={(e) => setDeptName(e.target.value)} 
+      />
+      <button className={`px-6 rounded-2xl font-black text-white transition-all ${deptEditMode ? 'bg-amber-500' : 'bg-indigo-600'}`}>
+        {deptEditMode ? 'GÜNCELLE' : 'EKLE'}
+      </button>
+    </form>
+
+    <div className="max-h-40 overflow-y-auto space-y-2 pr-2">
+      <p className="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Kayıtlı Bölümler</p>
+      {departments.map(d => (
+        <div key={d.id} className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+          <span className="font-bold text-xs text-slate-700 uppercase">{d.name}</span>
+          <div className="flex gap-1">
+            <button 
+              onClick={() => { setDeptEditMode(true); setDeptEditId(d.id); setDeptName(d.name); }} 
+              className="text-[9px] font-black bg-white px-2 py-1 rounded shadow-sm text-amber-500 hover:bg-amber-500 hover:text-white transition-all"
+            >
+              DÜZENLE
+            </button>
+            <button 
+              onClick={() => deleteDepartment(d.id)} 
+              className="text-[9px] font-black bg-white px-2 py-1 rounded shadow-sm text-rose-500 hover:bg-rose-500 hover:text-white transition-all"
+            >
+              SİL
+            </button>
           </div>
+        </div>
+      ))}
+    </div>
+  </div>
+          
 
           <div className="bg-white p-8 rounded-[2.5rem] shadow-xl border-2 border-emerald-50">
             <h2 className="font-black text-emerald-600 mb-6 text-xs uppercase italic tracking-widest">{editMode ? 'Dersi Güncelle ✏️' : '2. Bölüme Ders Tanımla 📖'}</h2>

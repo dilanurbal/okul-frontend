@@ -19,7 +19,7 @@ function Register() {
       alert('Aramıza Hoş Geldin! 🎉 Şimdi giriş yapabilirsin.');
       navigate('/'); 
     } catch (err) {
-      alert('Hay aksi! Kayıt sırasında bir hata oldu. 🌈');
+      alert('Hay aksi! Kayıt sırasında bir hata oldu. ');
     }
   };
 
@@ -39,15 +39,15 @@ function Register() {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6">
         <div className="w-full max-w-md bg-white rounded-[3rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-10 border-8 border-orange-50">
           
-          <h2 className="text-3xl font-black text-slate-800 tracking-tight text-center mb-6 italic uppercase">KAYIT OL 🎨</h2>
+          <h2 className="text-3xl font-black text-slate-800 tracking-tight text-center mb-6 italic uppercase">KAYIT OL 🖋️</h2>
 
           <div className="flex bg-slate-100 p-2 rounded-[2rem] mb-6">
             <button onClick={() => handleTabChange('student')} className={`flex-1 py-3 rounded-[1.5rem] text-[10px] font-black transition-all ${activeTab === 'student' ? 'bg-white shadow-md text-orange-600' : 'text-slate-400'}`}>ÖĞRENCİ</button>
-            <button onClick={() => handleTabChange('admin')} className={`flex-1 py-3 rounded-[1.5rem] text-[10px] font-black transition-all ${activeTab === 'admin' ? 'bg-white shadow-md text-pink-600' : 'text-slate-400'}`}>HOCA</button>
+            <button onClick={() => handleTabChange('admin')} className={`flex-1 py-3 rounded-[1.5rem] text-[10px] font-black transition-all ${activeTab === 'admin' ? 'bg-white shadow-md text-pink-600' : 'text-slate-400'}`}>AKADEMİSYEN</button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <input type="text" placeholder="İsmin nedir? 😊" className="w-full p-4 bg-slate-50 border-4 border-transparent rounded-[1.5rem] focus:border-orange-200 outline-none font-bold text-center transition-all" onChange={(e) => setFormData({...formData, name: e.target.value})} required />
+            <input type="text" placeholder="İsmin nedir?" className="w-full p-4 bg-slate-50 border-4 border-transparent rounded-[1.5rem] focus:border-orange-200 outline-none font-bold text-center transition-all" onChange={(e) => setFormData({...formData, name: e.target.value})} required />
             <input type="email" placeholder="E-posta adresin 📧" className="w-full p-4 bg-slate-50 border-4 border-transparent rounded-[1.5rem] focus:border-orange-200 outline-none font-bold text-center transition-all" onChange={(e) => setFormData({...formData, email: e.target.value})} required />
             <input type="password" placeholder="Güçlü bir şifre 🔒" className="w-full p-4 bg-slate-50 border-4 border-transparent rounded-[1.5rem] focus:border-orange-200 outline-none font-bold text-center transition-all" onChange={(e) => setFormData({...formData, password: e.target.value})} required />
 
