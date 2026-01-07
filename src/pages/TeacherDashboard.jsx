@@ -57,13 +57,6 @@ const TeacherDashboard = () => {
   } catch (err) { alert("Bölüm işlemi başarısız."); }
 };
 
-const deleteDepartment = async (id) => {
-  if(!window.confirm("Bu bölümü silmek bağlı dersleri etkileyebilir. Emin misiniz?")) return;
-  try {
-    await api.delete(`/departments/${id}`);
-    loadData();
-  } catch (err) { alert("Bölüm silinemedi."); }
-};
   const handleSaveCourse = async (e) => {
     e.preventDefault();
     const payload = {
@@ -135,24 +128,43 @@ const deleteDepartment = async (id) => {
     </form>
 
     <div className="max-h-40 overflow-y-auto space-y-2 pr-2">
-      <p className="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Kayıtlı Bölümler</p>
-      {departments.map(d => (
-        <div key={d.id} className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
-          <span className="font-bold text-xs text-slate-700 uppercase">{d.name}</span>
-          <div className="flex gap-1">
-            <button 
-              onClick={() => { setDeptEditMode(true); setDeptEditId(d.id); setDeptName(d.name); }} 
-              className="text-[9px] font-black bg-white px-2 py-1 rounded shadow-sm text-amber-500 hover:bg-amber-500 hover:text-white transition-all"
-            >
-              DÜZENLE
-            </button>
-            <button 
-              onClick={() => deleteDepartment(d.id)} 
-              className="text-[9px] font-black bg-white px-2 py-1 rounded shadow-sm text-rose-500 hover:bg-rose-500 hover:text-white transition-all"
-            >
-              SİL
-            </button>
-          </div>
+  <p className="text-[10px] font-black text-slate-400 uppercase mb-2 tracking-widest">Kayıtlı Bölümler</p>
+  {departments.map(d => (
+    <div key={d.id} className="flex justify-between items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
+      <span className="font-bold text-xs text-slate-700 uppercase">{d.name}</span>
+      
+      {/* ESKİ BUTONLARIN YERİNE BURAYI YAPIŞTIR */}
+      <div className="flex gap-2">
+        {/* DÜZENLEME BUTONU */}
+        <button 
+          onClick={() => { 
+            setDeptEditMode(true); 
+            setDeptEditId(d.id); 
+            setDeptName(d.name); 
+          }} 
+          className="p-3 bg-amber-50 text-amber-500 rounded-xl hover:bg-amber-500 hover:text-white transition-all"
+        >
+          ✏️
+        </button>
+
+        {/* SİLME BUTONU */}
+        <button 
+          onClick={async () => { 
+            if(window.confirm("Bölüm silinsin mi?")) { 
+              try {
+                await api.delete(`/departments/${d.id}`); 
+                loadData(); 
+              } catch (err) {
+                alert("Bölüm silinemedi! Önce bölmüm içindeki dersleri silmelisiniz.");
+              }
+            } 
+          }} 
+          className="p-3 bg-rose-50 text-rose-500 rounded-xl hover:bg-rose-600 hover:text-white transition-all"
+        >
+          🗑️
+        </button>
+      </div>
+      {/* BURAYA KADAR */}
         </div>
       ))}
     </div>
